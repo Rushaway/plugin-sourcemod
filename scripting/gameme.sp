@@ -36,7 +36,7 @@
 
 
 // plugin information
-#define GAMEME_PLUGIN_VERSION "5.0.0"
+#define GAMEME_PLUGIN_VERSION "5.0.1"
 public Plugin:myinfo = {
 	name = "gameME Plugin",
 	author = "TTS Oetzel & Goerz GmbH",
@@ -1104,6 +1104,7 @@ get_server_mod()
 				HookEvent("gg_final_weapon_achieved",     Event_CSGOGGWin);
 				HookEvent("gg_leader",                    Event_CSGOGGLeader);
 				HookEvent("round_mvp",                    Event_RoundMVP);
+				HookEvent("achievement_earned",		 Event_AchievementEarned);
 
 				HookEvent("bomb_dropped",		 	 gameME_Event_PlyBombDropped, EventHookMode_Pre);
 				HookEvent("player_given_c4",     	 gameME_Event_PlyBombPickup,  EventHookMode_Pre);
@@ -1121,6 +1122,7 @@ get_server_mod()
 				HookEvent("round_start",   			 Event_CSSRoundStart);
 				HookEvent("round_end",    			 Event_CSSRoundEnd);
 				HookEvent("round_mvp",               Event_RoundMVP);
+				HookEvent("achievement_earned",		 Event_AchievementEarned);
 
 				HookEvent("bomb_dropped",			 gameME_Event_PlyBombDropped, EventHookMode_Pre);
 				HookEvent("bomb_pickup",     		 gameME_Event_PlyBombPickup,  EventHookMode_Pre);
@@ -1134,6 +1136,7 @@ get_server_mod()
 				HookEvent("player_hurt",  			 Event_DODSPlayerHurt);
 				HookEvent("player_death", 			 Event_DODSPlayerDeath);
 				HookEvent("round_end", 			     Event_DODSRoundEnd);
+				HookEvent("achievement_earned",		 Event_AchievementEarned);
 			}
 			case MOD_TF2: {
 				HookEvent("player_death", 			 	Event_TF2PlayerDeath);
@@ -1148,6 +1151,7 @@ get_server_mod()
 				HookEvent("teamplay_win_panel",     	Event_TF2WinPanel);
 				HookEvent("arena_win_panel",         	Event_TF2WinPanel);
 				HookEvent("player_teleported",       	Event_TF2PlayerTeleported);
+				HookEvent("achievement_earned",		 	Event_AchievementEarned);
 
 				HookEvent("rocket_jump", 				Event_TF2RocketJump);
 				HookEvent("rocket_jump_landed", 	 	Event_TF2JumpLanded);
@@ -1176,6 +1180,7 @@ get_server_mod()
 				HookEvent("player_death", 			 Event_L4DPlayerDeath);
 				HookEvent("player_spawn", 			 Event_L4DPlayerSpawn);
 				HookEvent("round_end_message",		 Event_L4DRoundEnd, EventHookMode_PostNoCopy);
+				HookEvent("achievement_earned",		 Event_AchievementEarned);
 		
 				HookEvent("survivor_rescued",		 Event_L4DRescueSurvivor);
 				HookEvent("heal_success", 			 Event_L4DHeal);
@@ -1218,6 +1223,7 @@ get_server_mod()
 				HookEvent("player_death",            Event_ZPSPlayerDeath);
 				HookEvent("player_spawn",            Event_ZPSPlayerSpawn);
 				HookEvent("round_end",               Event_ZPSRoundEnd, EventHookMode_PostNoCopy);
+				HookEvent("achievement_earned",		 Event_AchievementEarned);
 			}
 			case MOD_CSP: {
 				HookEvent("round_start",   			 Event_CSPRoundStart);
@@ -2937,6 +2943,16 @@ public Event_RoundMVP(Handle: event, const String: name[], bool:dontBroadcast)
 		log_player_event(player, "triggered", "mvp");
 	}
 }
+
+public Event_AchievementEarned(Handle: event, const String: name[], bool:dontBroadcast)
+{
+	new player = GetClientOfUserId(GetEventInt(event, "userid"));
+	if (player > 0) {
+		log_player_event(player, "triggered", "achievement_earned");
+	}
+}
+
+
 
 
 public Event_TF2PlayerDeath(Handle: event, const String: name[], bool:dontBroadcast)
